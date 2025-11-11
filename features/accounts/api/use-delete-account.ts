@@ -1,33 +1,37 @@
-import { InferRequestType , InferResponseType } from "hono";
-import {useMutation , useQueryClient} from '@tanstack/react-query'
-import {toast} from 'sonner'
-import {client} from "@/lib/hono";
+import { InferResponseType } from "hono";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { client } from "@/lib/hono";
 
 type ResponseType = InferResponseType<typeof client.api.accounts[":id"]["$delete"]>;
 
-
-export const useDeleteAccount = (id?:string)=>{
+export const useDeleteAccount = (id?: string) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<
-  ResponseType,
-  Error
+    ResponseType,
+    Error
   >({
-    mutationFn : async (json)=>{
+    mutationFn: async () => { // ✅ json parameter remove karo
+      if (!id) {
+        throw new Error("Account ID is required");
+      }
+      
       const response = await client.api.accounts[":id"]["$delete"]({
-        param:{id},
-      })
+        param: { id }, // ✅ Ab id definitely string hai
+      });
       return await response.json();
     },
-    onSuccess:()=>{
+    onSuccess: () => {
       toast.success("Account deleted");
-      queryClient.invalidateQueries({queryKey:['accounts',{id}]});
-      queryClient.invalidateQueries({queryKey:['accounts'] });
-      // TODO : Invalidate summary and transactions
+      queryClient.invalidateQueries({ queryKey: ['accounts', { id }] });
+      queryClient.invalidateQueries({ queryKey: ['accounts'] });
+      // TODO: Invalidate summary and transactions
     },
-    onError: ()=>{
-      toast.error('Failed to delete account')
+    onError: () => {
+      toast.error('Failed to delete account');
     },
   });
+  
   return mutation;
 };

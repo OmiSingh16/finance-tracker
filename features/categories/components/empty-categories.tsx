@@ -26,7 +26,7 @@ export const EmptyCategories = ({ searchQuery }: EmptyCategoriesProps) => { // �
     <div className="text-center py-12">
       <Folder className="h-16 w-16 text-slate-300 mx-auto mb-4" /> {/* ✅ Icon change */}
       <h3 className="text-lg font-semibold text-slate-700 mb-2">No categories yet</h3> {/* ✅ Text change */}
-      <p className="text-slate-500 mb-6">Create your first category to get started</p> {/* ✅ Text change */}
+      <p className="text-slate-500 mb-6">Create  category to get started</p> {/* ✅ Text change */}
       <Button
         onClick={newCategory.onOpen} // ✅ Hook change
         className="bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"

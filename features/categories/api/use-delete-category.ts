@@ -13,14 +13,14 @@ export const useDeleteCategory = (id?:string)=>{
   ResponseType,
   Error
   >({
-    mutationFn : async (json)=>{
+    mutationFn : async ()=>{
       const response = await client.api.categories[":id"]["$delete"]({
         param:{id},
       })
       return await response.json();
     },
     onSuccess:()=>{
-      toast.success("Account deleted");
+      toast.success("Category deleted");
       queryClient.invalidateQueries({queryKey:['category',{id}]});
       queryClient.invalidateQueries({queryKey:['categories'] });
       // TODO : Invalidate summary and transactions

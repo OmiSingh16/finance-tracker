@@ -209,7 +209,7 @@ export const CategoryForm = ({
           <Button 
             type="submit" 
             disabled={disabled}
-            className="w-full h-12 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold text-base rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:transform-none"
+            className="w-full h-10 bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
           >
             {disabled ? (
               <div className="flex items-center gap-2">
@@ -229,7 +229,7 @@ export const CategoryForm = ({
               type='button'
               disabled={disabled || isDeleting}
               onClick={handleDelete}
-              className='w-full h-12 bg-linear-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:transform-none'
+              className="w-full h-10 bg-linear-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white font-medium text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
             >
               {isDeleting ? (
                 <div className="flex items-center gap-2">

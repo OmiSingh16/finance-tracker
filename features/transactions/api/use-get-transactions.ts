@@ -18,7 +18,6 @@ export const useGetTransactions = () => {
       // ✅ Type assertion with proper checking
       const data = result.data as any[];
       
-      console.log("🔴 Transactions Data:", data);
 
       if (!Array.isArray(data)) {
         return [];

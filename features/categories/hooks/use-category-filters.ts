@@ -1,29 +1,29 @@
 import { useState, useMemo } from 'react';
 
-// ✅ FLEXIBLE TYPE WITH NULL HANDLING
+// ✅ CORRECT TYPE - Match your actual data
 type Category = {
   id: string;
   name: string;
-  type:  string | null; // ✅ ALL POSSIBILITIES COVER
-  status: string | null;
-  lastUsed: string | null;
-  userId: string;
-  createdAt: string | null;
-  updatedAt: string | null;
+  type: 'income' | 'expense'; // ✅ Change to match your data
+  status?: string | null;
+  lastUsed?: string | null;
+  userId?: string;
+  createdAt?: string | null;
+  updatedAt?: string | null;
   plaidId?: string | null;
 };
-
 export const useCategoryFilters = (categories: Category[]) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [typeFilter, setTypeFilter] = useState<string>('all'); // ✅ String instead of specific
 
   const filteredCategories = useMemo(() => {
     return categories.filter((category) => {
-      const matchesSearch = category.name?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false;
+      const matchesSearch = category.name.toLowerCase().includes(searchQuery.toLowerCase());
       
-      // ✅ SAFE TYPE CHECKING
-      const categoryType = (category.type || 'expense').toLowerCase();
-      const matchesType = typeFilter === 'all' || categoryType === typeFilter.toLowerCase();
+      // ✅ Safe type checking
+      const matchesType = 
+        typeFilter === 'all' || 
+        category.type === typeFilter;
       
       return matchesSearch && matchesType;
     });
@@ -33,7 +33,7 @@ export const useCategoryFilters = (categories: Category[]) => {
     searchQuery,
     setSearchQuery,
     typeFilter,
-    setTypeFilter,
+    setTypeFilter, // ✅ Now accepts any string
     filteredCategories
   };
 };

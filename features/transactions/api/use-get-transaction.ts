@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/hono";
 
+
 // ✅ Manual type define karo
 type Transaction = {
   id: string;
@@ -36,8 +37,7 @@ export const useGetTransaction = (id?: string) => {
       
       // ✅ Type assertion use karo
       const data = result.data as any;
-      
-      console.log("🔴 Single Transaction Raw Data:", data);
+
 
       return {
         id: data.id,

@@ -43,6 +43,13 @@
       "when": 1762752306652,
       "tag": "0005_premium_gunslinger",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1762894406573,
+      "tag": "0006_minor_captain_britain",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,4 @@
- import { Hono } from "hono";
+import { Hono } from "hono";
 import { db } from '@/db/drizzle';
 import { z } from "zod";
 import { zValidator } from '@hono/zod-validator';
@@ -7,10 +7,11 @@ import { createId } from '@paralleldrive/cuid2';
 import { transactions, insertTransactionSchema, accounts, categories } from "@/db/schema";
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { and, eq, inArray, gte, lte, desc, sql } from 'drizzle-orm';
+import { format } from "date-fns"; // add at the top
 
 const app = new Hono()
 
-// GET ALL TRANSACTIONS WITH FILTERS
+// GET ALL TRANSACTIONS WITH FILTERS - ✅ FIXED: REMOVED IST ADJUSTMENT
 .get('/',
   zValidator('query',
     z.object({
@@ -32,8 +33,16 @@ const app = new Hono()
     const defaultTo = new Date();
     const defaultFrom = subDays(defaultTo, 30);
     
-    const startDate = from ? parse(from, 'yyyy-MM-dd', new Date()) : defaultFrom;
-    const endDate = to ? parse(to, 'yyyy-MM-dd', new Date()) : defaultTo;
+    // ✅ FIXED: REMOVE IST ADJUSTMENT - Use dates as is
+    const startDate = from 
+      ? parse(from, 'yyyy-MM-dd', new Date())
+      : defaultFrom;
+    const endDate = to 
+      ? parse(to, 'yyyy-MM-dd', new Date())
+      : defaultTo;
+
+    // ✅ Set end date to end of day for inclusive range
+    endDate.setHours(23, 59, 59, 999);
 
     const data = await db
       .select({
@@ -55,8 +64,8 @@ const app = new Hono()
       .leftJoin(categories, eq(transactions.categoryId, categories.id))
       .where(and(
         eq(transactions.userId, auth.userId),
-        gte(transactions.date, startDate),
-        lte(transactions.date, endDate),
+        gte(transactions.date, format(startDate, 'yyyy-MM-dd')),
+lte(transactions.date, format(endDate, 'yyyy-MM-dd')),
         accountId ? eq(transactions.accountId, accountId) : undefined,
         categoryId ? eq(transactions.categoryId, categoryId) : undefined
       ))
@@ -115,7 +124,7 @@ const app = new Hono()
   }
 )
 
-// CREATE TRANSACTION - ✅ FIXED SQL SYNTAX
+// CREATE TRANSACTION
 .post('/', 
   clerkMiddleware(), 
   zValidator('json', insertTransactionSchema.pick({
@@ -135,15 +144,21 @@ const app = new Hono()
       return c.json({ error: 'Unauthorized' }, 401);
     }
 
+    // ✅ VALIDATE CATEGORY ID
+    if (!values.categoryId) {
+      return c.json({ error: 'Category is required' }, 400);
+    }
+
     const [data] = await db.transaction(async (tx) => {
-      // 1. Transaction create karo
+      // 1. Transaction create karo WITH CATEGORY ID
       const [transaction] = await tx.insert(transactions).values({
         id: createId(),
         userId: auth.userId,
         ...values,
+        categoryId: values.categoryId,
       }).returning();
 
-      // 2. Account balance update karo - ✅ FIXED SQL SYNTAX
+      // 2. Account balance update karo
       if (values.type === 'income') {
         await tx.update(accounts)
           .set({
@@ -165,7 +180,7 @@ const app = new Hono()
   }
 )
 
-// BULK DELETE TRANSACTIONS - ✅ ALREADY CORRECT
+// BULK DELETE TRANSACTIONS
 .post('/bulk-delete',
   clerkMiddleware(),
   zValidator('json', z.object({
@@ -180,7 +195,6 @@ const app = new Hono()
     }
 
     const data = await db.transaction(async (tx) => {
-      // 1. Pehle delete hone wali transactions fetch karo
       const transactionsToDelete = await tx
         .select({
           id: transactions.id,
@@ -196,7 +210,6 @@ const app = new Hono()
           )
         );
 
-      // 2. Account-wise amount calculate karo
       const accountUpdates: { [accountId: string]: number } = {};
       
       transactionsToDelete.forEach(transaction => {
@@ -209,7 +222,6 @@ const app = new Hono()
         accountUpdates[transaction.accountId] += adjustment;
       });
 
-      // 3. Accounts balance update karo (Manual calculation - ✅ CORRECT)
       for (const [accountId, adjustment] of Object.entries(accountUpdates)) {
         const [account] = await tx
           .select({ balance: accounts.balance })
@@ -226,7 +238,6 @@ const app = new Hono()
           .where(eq(accounts.id, accountId));
       }
 
-      // 4. Ab transactions delete karo
       const deletedTransactions = await tx
         .delete(transactions)
         .where(
@@ -246,7 +257,7 @@ const app = new Hono()
   }
 )
 
-// UPDATE TRANSACTION - ✅ FIXED SQL SYNTAX
+// UPDATE TRANSACTION
 .patch("/:id",
   clerkMiddleware(),
   zValidator('param', z.object({
@@ -274,7 +285,6 @@ const app = new Hono()
     }
 
     const data = await db.transaction(async (tx) => {
-      // 1. Pehle purani transaction fetch karo
       const [oldTransaction] = await tx
         .select({
           amount: transactions.amount,
@@ -293,7 +303,6 @@ const app = new Hono()
         throw new Error("Transaction not found");
       }
 
-      // 2. Purane account ka balance adjust karo - ✅ FIXED SQL SYNTAX
       const oldAmount = oldTransaction.amount;
       
       if (oldTransaction.type === 'income') {
@@ -310,7 +319,6 @@ const app = new Hono()
           .where(eq(accounts.id, oldTransaction.accountId));
       }
 
-      // 3. Naye account ka balance adjust karo - ✅ FIXED SQL SYNTAX
       const newAmount = values.amount;
       
       if (values.type === 'income') {
@@ -327,7 +335,6 @@ const app = new Hono()
           .where(eq(accounts.id, values.accountId));
       }
 
-      // 4. Transaction update karo
       const [updatedTransaction] = await tx
         .update(transactions)
         .set(values)
@@ -360,7 +367,7 @@ const app = new Hono()
   }
 )
 
-// DELETE TRANSACTION - ✅ FIXED SQL SYNTAX
+// DELETE TRANSACTION
 .delete("/:id",
   clerkMiddleware(),
   zValidator('param', z.object({
@@ -378,7 +385,6 @@ const app = new Hono()
     }
 
     const data = await db.transaction(async (tx) => {
-      // 1. Pehle delete hone wali transaction fetch karo
       const [transactionToDelete] = await tx
         .select({
           amount: transactions.amount,
@@ -397,7 +403,6 @@ const app = new Hono()
         throw new Error("Transaction not found");
       }
 
-      // 2. Account balance update karo - ✅ FIXED SQL SYNTAX
       const amount = transactionToDelete.amount;
       
       if (transactionToDelete.type === 'income') {
@@ -414,7 +419,6 @@ const app = new Hono()
           .where(eq(accounts.id, transactionToDelete.accountId));
       }
 
-      // 3. Ab transaction delete karo
       const [deletedTransaction] = await tx
         .delete(transactions)
         .where(

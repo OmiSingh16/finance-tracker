@@ -1,22 +1,32 @@
-import { drizzle } from 'drizzle-orm/postgres-js'
-import postgres from 'postgres'
-import { accounts } from '@/db/schema'
+// lib/db.ts
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
+import * as schema from '@/db/schema';
 
-// Proper validation
-const connectionString = process.env.DATABASE_URL
+// Proper validation with better connection settings
+const connectionString = process.env.DATABASE_URL;
+
 if (!connectionString) {
-  throw new Error('DATABASE_URL is required in environment variables')
+  throw new Error('DATABASE_URL is required in environment variables');
 }
 
-const client = postgres(connectionString, { prepare: false })
-export const db = drizzle(client)
+// ✅ Better connection configuration for Supabase
+const client = postgres(connectionString, {
+  prepare: false,
+  idle_timeout: 20,
+  connect_timeout: 10,
+  max_lifetime: 60 * 30, // 30 minutes
+});
 
-// Database operations ke liye function
-export async function getAllUsers() {
-  return await db.select().from(accounts)
-}
+export const db = drizzle(client, { schema });
 
-// Usage
-getAllUsers().then(users => {
-  console.log('Users:', users)
-})
+// Test connection function
+export const testConnection = async () => {
+  try {
+    const result = await client`SELECT version()`;
+    
+    return true;
+  } catch (error) {
+    return false;
+  }
+};

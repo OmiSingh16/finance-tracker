@@ -91,7 +91,8 @@ const app = new Hono()
       userId: auth.userId,
       ...values,
       status: 'active',
-      lastUsed: new Date(),
+      lastUsed: new Date().toISOString(),
+
     }).returning();
     return c.json({data})
 } 
@@ -159,7 +160,8 @@ const app = new Hono()
     .update(categories)
     .set({
       ...values,
-      updatedAt: new Date(),
+     updatedAt: new Date().toISOString(),
+
     })
     .where(
       and(

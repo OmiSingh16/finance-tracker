@@ -269,18 +269,7 @@ const CategoryPage = () => {
       </Card>
 
       {/* Empty State Add Button */}
-      {filteredCategories.length === 0 && !searchQuery && (
-        <div className="mt-6 text-center">
-          <Button 
-            onClick={newCategory.onOpen} 
-            size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            <Plus className='h-5 w-5 mr-2'/>
-            Create Your First Category
-          </Button>
-        </div>
-      )}
+      
     </div>
   );
 };
