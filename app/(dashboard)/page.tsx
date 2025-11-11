@@ -23,7 +23,7 @@ const CATEGORY_TYPES = [
 ];
 
 const OverviewPage = () => {
-  const [selectedDateRange, setSelectedDateRange] = useState('30');
+  const [selectedDateRange, setSelectedDateRange] = useState('7');
   const [selectedCategoryType, setSelectedCategoryType] = useState('expense');
 
   // ✅ DYNAMIC DATE CALCULATION - Browser time

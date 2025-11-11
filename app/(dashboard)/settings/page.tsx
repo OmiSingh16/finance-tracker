@@ -149,11 +149,11 @@ const SettingsPage = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="profile-name">Full Name</Label>
-                      <Input id="profile-name" placeholder="Enter your full name" defaultValue="John Doe" />
+                      <Input id="profile-name" placeholder="Enter your full name" defaultValue="Yadav Ji" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="profile-email">Email Address</Label>
-                      <Input id="profile-email" type="email" placeholder="your@email.com" defaultValue="john@example.com" />
+                      <Input id="profile-email" type="email" placeholder="your@email.com" defaultValue="yadavji@example.com" />
                     </div>
                   </div>
                   
