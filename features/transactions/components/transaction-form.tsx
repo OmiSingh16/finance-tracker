@@ -663,13 +663,15 @@ export const TransactionForm = ({
   }, [form, id]);
 
   // ✅ Ensure past/current date allowed
-  const getTodayDate = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return today.toISOString().split('T')[0];
-  };
+  // const getTodayDate = () => {
+  //   const today = new Date();
+  //   today.setHours(0, 0, 0, 0);
+  //   return today.toISOString().split('T')[0];
+  // };
 
-  const today = getTodayDate();
+  const maxDate = new Date();
+maxDate.setDate(maxDate.getDate()); // 30 days from today
+const maxDateStr = maxDate.toISOString().split('T')[0];
 
   // ✅ Final form submit handler
   const handleSubmit = (values: FormValues) => {
@@ -766,7 +768,7 @@ export const TransactionForm = ({
                   <Input
                     type="date"
                     value={field.value || ''}
-                    max={today}
+                    max={maxDateStr }
                     disabled={disabled}
                     onChange={(e) => field.onChange(e.target.value)} // ✅ store as string
                     className="h-10 pl-10 text-sm border-2 border-slate-200 focus:border-blue-500 transition-all duration-200 rounded-xl"

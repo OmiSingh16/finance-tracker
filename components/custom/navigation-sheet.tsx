@@ -70,13 +70,6 @@ const NavigationSheetContent = React.forwardRef<
   </div>
   
   <div className="bg-white/20 rounded-full p-1 border-2 border-white/30">
-    <UserButton 
-      appearance={{
-        elements: {
-          avatarBox: "w-8 h-8",
-        }
-      }}
-    />
   </div>
 </div>
 

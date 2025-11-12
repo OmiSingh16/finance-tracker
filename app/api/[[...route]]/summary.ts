@@ -8,8 +8,7 @@ import {
   parse, 
   differenceInDays, 
   format, 
-  eachDayOfInterval, 
-  endOfDay 
+  eachDayOfInterval,  
 } from 'date-fns';
 import { db } from '@/db/drizzle';
 import { and, eq, gte, lte, sql } from 'drizzle-orm';

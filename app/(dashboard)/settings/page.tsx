@@ -4,6 +4,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useClerk } from '@clerk/nextjs';
+import { LogOut } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -26,7 +28,10 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
+
 const SettingsPage = () => {
+
+   const { signOut } = useClerk();
   const [activeTab, setActiveTab] = useState('profile');
   const [notifications, setNotifications] = useState({
     email: true,
@@ -44,6 +49,11 @@ const SettingsPage = () => {
   const handleExportData = () => {
     alert('Data export started...');
   };
+
+  const handleSignOut = () => {
+    signOut();
+  };
+
 
   const handleImportData = () => {
     alert('Please select file to import...');
@@ -66,6 +76,8 @@ const SettingsPage = () => {
           </div>
           <p className="text-slate-600">Manage your account preferences and application settings</p>
         </div>
+
+        
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Sidebar Navigation */}
@@ -186,10 +198,21 @@ const SettingsPage = () => {
                     </div>
                   </div>
 
-                  <div className="flex justify-end gap-3 pt-4">
-                    <Button variant="outline">Cancel</Button>
-                    <Button>Save Changes</Button>
-                  </div>
+                    <div className="flex justify-between items-center pt-4">
+  <Button
+    onClick={handleSignOut}
+    variant="ghost"
+    className="justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
+  >
+    <LogOut className="h-4 w-4 mr-2" />
+    Sign Out
+  </Button>
+  
+  <div className="flex gap-3">
+    <Button variant="outline">Cancel</Button>
+    <Button>Save Changes</Button>
+  </div>
+</div>
                 </CardContent>
               </Card>
             )}

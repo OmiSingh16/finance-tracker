@@ -1,11 +1,19 @@
 import {z} from 'zod'
+import { insertAccountSchema } from '@/db/schema'
 import {Trash, Landmark, Wallet, CreditCard, Building, Sparkles, CheckCircle2, Loader2} from 'lucide-react'
 import {useForm} from 'react-hook-form'
 import {zodResolver} from "@hookform/resolvers/zod"
 
 import { Input } from '@/components/ui/input'
 import {Button} from '@/components/ui/button'
-import { insertAccountSchema } from '@/db/schema'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import {
   Form,
   FormControl,
@@ -36,14 +44,14 @@ type Props = {
 // UPDATE ACCOUNT SUGGESTIONS - ADD TYPE AND BALANCE
 const accountSuggestions = [
   { 
-    name: "HDFC Savings", 
+    name: "HDFC", 
     type: "savings",           // ADD THIS
     balance: "0",              // ADD THIS
     icon: <Landmark className="h-4 w-4" />, 
     color: "bg-blue-100 text-blue-700 border-blue-200" 
   },
   { 
-    name: "SBI Current", 
+    name: "SBI", 
     type: "current",           // ADD THIS
     balance: "0",              // ADD THIS
     icon: <Building className="h-4 w-4" />, 
@@ -57,7 +65,7 @@ const accountSuggestions = [
     color: "bg-orange-100 text-orange-700 border-orange-200" 
   },
   { 
-    name: "ICICI Credit Card", 
+    name: "ICICI", 
     type: "credit card",       // ADD THIS
     balance: "0",              // ADD THIS
     icon: <CreditCard className="h-4 w-4" />, 
@@ -170,20 +178,22 @@ export const AccountForm = ({
                   Account Type
                 </FormLabel>
                 <FormControl>
-                  <select 
-                    id="account-type-select" 
-                    {...field}
-                     name="type"
-                    disabled={disabled}
-                    value={field.value || ''}
-                    autoComplete="off"
-                    className="h-12 px-4 text-base border-2 border-slate-200 focus:border-blue-500 transition-all duration-200 rounded-xl bg-white/80 backdrop-blur-sm w-full"
-                  >
-                    <option value="savings">Savings Account</option>
-                    <option value="current">Current Account</option>
-                    <option value="cash">Cash Wallet</option>
-                    <option value="credit card">Credit Card</option>
-                  </select>
+                  <Select
+  value={field.value || ''}
+  onValueChange={field.onChange}
+  disabled={disabled}
+>
+  <SelectTrigger className="h-12 px-4 text-base border-2 border-slate-200 focus:border-blue-500 transition-all duration-200 rounded-xl bg-white/80 backdrop-blur-sm w-full">
+    <SelectValue placeholder="Select Account Type" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="savings">Savings Account</SelectItem>
+    <SelectItem value="current">Current Account</SelectItem>
+    <SelectItem value="cash">Cash Wallet</SelectItem>
+    <SelectItem value="credit card">Credit Card</SelectItem>
+  </SelectContent>
+</Select>
+
                 </FormControl>
                 <FormMessage />
               </FormItem>

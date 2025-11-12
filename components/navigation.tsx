@@ -3,12 +3,14 @@
 import { usePathname } from "next/navigation";
 import { NavButton } from "@/components/nav-button";
 import { Sheet, SheetTrigger } from '@/components/ui/sheet';
-import { NavigationSheetContent } from '@/components/custom/navigation-sheet'; // Custom component
-import { useMedia } from 'react-use'
+import { NavigationSheetContent } from '@/components/custom/navigation-sheet';
+import { useMedia } from 'react-use';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Menu, Home, TrendingUp, Landmark, Folder, Settings, Wallet } from "lucide-react";
+import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
+import { UserButton } from "@clerk/nextjs";
 
 const routes = [
   {
@@ -49,6 +51,15 @@ export const Navigation = () => {
     setIsOpen(false);
   };
 
+  // ✅ Fetch accounts data for Quick Stats
+  const accountsQuery = useGetAccounts();
+  const accounts = accountsQuery.data || [];
+
+  const totalBalance = accounts.reduce((sum, account) => {
+    const balance = parseInt(account.balance || '0');
+    return sum + balance;
+  }, 0);
+
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -61,8 +72,9 @@ export const Navigation = () => {
             <Menu className="size-4" />
           </Button>
         </SheetTrigger>
+
         
-        {/* Custom Navigation Sheet */}
+        
         <NavigationSheetContent side='left' className="px-0">
           <nav className="flex flex-col gap-1 p-4">
             {routes.map((route) => (
@@ -88,6 +100,7 @@ export const Navigation = () => {
             ))}
           </nav>
 
+
           {/* Quick Stats Section */}
           <div className="mt-auto p-4 border-t border-slate-200">
             <div className="bg-linear-to-r from-blue-500 to-purple-500 rounded-xl p-4 text-white">
@@ -95,21 +108,30 @@ export const Navigation = () => {
                 <Wallet className="h-4 w-4" />
                 <span className="text-sm font-medium">Quick Stats</span>
               </div>
-              <div className="space-y-1 text-xs">
-                <div className="flex justify-between">
-                  <span>Total Balance</span>
-                  <span className="font-semibold">₹5.8L</span>
+
+              {accountsQuery.isLoading ? (
+                <div className="text-xs text-white/80">Loading...</div>
+              ) : accounts.length > 0 ? (
+                <div className="space-y-1 text-xs">
+                  <div className="flex justify-between">
+                    <span>Total Balance</span>
+                    <span className="font-semibold">
+                      ₹{totalBalance}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Accounts</span>
+                    <span className="font-semibold">{accounts.length}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span>Accounts</span>
-                  <span className="font-semibold">4</span>
-                </div>
-              </div>
+              ) : (
+                <div className="text-xs text-white/80">No account data available</div>
+              )}
             </div>
           </div>
         </NavigationSheetContent>
       </Sheet>
-    )
+    );
   }
 
   return (
