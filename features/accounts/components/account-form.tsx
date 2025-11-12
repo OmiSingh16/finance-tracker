@@ -1,3 +1,4 @@
+
 import {z} from 'zod'
 import { insertAccountSchema } from '@/db/schema'
 import {Trash, Landmark, Wallet, CreditCard, Building, Sparkles, CheckCircle2, Loader2} from 'lucide-react'
@@ -24,11 +25,10 @@ import {
 } from '@/components/ui/form'
 import { useState } from 'react'
 
-// UPDATE SCHEMA - ADD TYPE AND BALANCE
 const formSchema = insertAccountSchema.pick({
   name: true,
-  type: true,      // ADD THIS
-  balance: true,   // ADD THIS
+  type: true,
+  balance: true,
 });
 
 type FormValues = z.input<typeof formSchema>;
@@ -41,33 +41,32 @@ type Props = {
   disabled?: boolean;
 };
 
-// UPDATE ACCOUNT SUGGESTIONS - ADD TYPE AND BALANCE
 const accountSuggestions = [
   { 
     name: "HDFC", 
-    type: "savings",           // ADD THIS
-    balance: "0",              // ADD THIS
+    type: "savings",
+    balance: "0",
     icon: <Landmark className="h-4 w-4" />, 
     color: "bg-blue-100 text-blue-700 border-blue-200" 
   },
   { 
     name: "SBI", 
-    type: "current",           // ADD THIS
-    balance: "0",              // ADD THIS
+    type: "current",
+    balance: "0",
     icon: <Building className="h-4 w-4" />, 
     color: "bg-green-100 text-green-700 border-green-200" 
   },
   { 
     name: "Cash Wallet", 
-    type: "cash",              // ADD THIS
-    balance: "0",              // ADD THIS
+    type: "cash",
+    balance: "0",
     icon: <Wallet className="h-4 w-4" />, 
     color: "bg-orange-100 text-orange-700 border-orange-200" 
   },
   { 
     name: "ICICI", 
-    type: "credit card",       // ADD THIS
-    balance: "0",              // ADD THIS
+    type: "credit card",
+    balance: "0",
     icon: <CreditCard className="h-4 w-4" />, 
     color: "bg-red-100 text-red-700 border-red-200" 
   },
@@ -82,13 +81,12 @@ export const AccountForm = ({
 }: Props)=>{
   const [isDeleting, setIsDeleting] = useState(false);
   
-  // UPDATE DEFAULT VALUES
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues || {
       name: '',
-      type: 'savings',    // ADD THIS
-      balance: '0',       // ADD THIS
+      type: 'savings',
+      balance: '0',
     },
   })
 
@@ -101,40 +99,20 @@ export const AccountForm = ({
     onDelete?.();
   }
 
-  // UPDATE SUGGESTION HANDLER
   const handleSuggestionClick = (suggestion: any) => {
     form.setValue('name', suggestion.name, { shouldValidate: true });
-    form.setValue('type', suggestion.type, { shouldValidate: true });    // ADD THIS
-    form.setValue('balance', suggestion.balance, { shouldValidate: true }); // ADD THIS
+    form.setValue('type', suggestion.type, { shouldValidate: true });
+    form.setValue('balance', suggestion.balance, { shouldValidate: true });
   }
 
-  // Unique ID for the input field
   const inputId = `account-name-${id || 'new'}`;
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
-        {/* Header Section - SAME */}
-        {/* <div className="text-center space-y-3">
-          <div className={`p-4 rounded-2xl inline-flex ${id ? 'bg-green-100' : 'bg-linear-to-r from-blue-100 to-purple-100'}`}>
-            {id ? (
-              <CheckCircle2 className="h-6 w-6 text-green-600" />
-            ) : (
-              // <Sparkles className="h-6 w-6 text-purple-600" />
-            )}
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold text-slate-800">
-              {id ? 'Update Account' : 'Create New Account'}
-            </h2>
-            <p className="text-slate-600 mt-1">
-              {id ? 'Update your account details' : 'Add a new account to track your finances'}
-            </p>
-          </div>
-        </div> */}
-
-        {/* Form Fields - ADD TYPE AND BALANCE FIELDS */}
-        <div className="space-y-4 mt-5">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-4 sm:space-y-3'>
+        {/* Form Fields - Mobile Responsive */}
+        <div className="space-y-4 sm:space-y-4">
+          {/* Account Name Field */}
           <FormField 
             name='name'
             control={form.control}
@@ -142,7 +120,7 @@ export const AccountForm = ({
               <FormItem>
                 <FormLabel 
                   htmlFor={inputId}
-                  className="flex items-center gap-2 text-slate-700 font-semibold text-base"
+                  className="flex items-center gap-2 text-slate-700 font-semibold text-sm sm:text-base"
                 >
                   <Landmark className="h-4 w-4 text-blue-600" />
                   Account Name
@@ -155,17 +133,17 @@ export const AccountForm = ({
                       placeholder='e.g. HDFC Savings, SBI Current, Cash Wallet'
                       {...field}
                       autoComplete="account-name"
-                      className="h-12 pl-11 text-base border-2 border-slate-200 focus:border-blue-500 transition-all duration-200 rounded-xl bg-white/80 backdrop-blur-sm"
+                      className="h-12 sm:h-11 pl-11 text-sm sm:text-base border-2 border-slate-200 focus:border-blue-500 transition-all duration-200 rounded-xl bg-white/80 backdrop-blur-sm"
                     />
                     <Landmark className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
                   </div>
                 </FormControl>
-                <FormMessage className="text-sm font-medium" />
+                <FormMessage className="text-xs sm:text-sm font-medium" />
               </FormItem>
             )}
           />
 
-          {/* ADD TYPE FIELD */}
+          {/* Account Type Field */}
           <FormField 
             name='type'
             control={form.control}
@@ -173,34 +151,33 @@ export const AccountForm = ({
               <FormItem>
                 <FormLabel 
                  htmlFor="account-type-select" 
-                className="flex items-center gap-2 text-slate-700 font-semibold text-base">
+                className="flex items-center gap-2 text-slate-700 font-semibold text-sm sm:text-base">
                   <CreditCard className="h-4 w-4 text-blue-600" />
                   Account Type
                 </FormLabel>
                 <FormControl>
                   <Select
-  value={field.value || ''}
-  onValueChange={field.onChange}
-  disabled={disabled}
->
-  <SelectTrigger className="h-12 px-4 text-base border-2 border-slate-200 focus:border-blue-500 transition-all duration-200 rounded-xl bg-white/80 backdrop-blur-sm w-full">
-    <SelectValue placeholder="Select Account Type" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="savings">Savings Account</SelectItem>
-    <SelectItem value="current">Current Account</SelectItem>
-    <SelectItem value="cash">Cash Wallet</SelectItem>
-    <SelectItem value="credit card">Credit Card</SelectItem>
-  </SelectContent>
-</Select>
-
+                    value={field.value || ''}
+                    onValueChange={field.onChange}
+                    disabled={disabled}
+                  >
+                    <SelectTrigger className="h-12 sm:h-11 px-4 text-sm sm:text-base border-2 border-slate-200 focus:border-blue-500 transition-all duration-200 rounded-xl bg-white/80 backdrop-blur-sm w-full">
+                      <SelectValue placeholder="Select Account Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="savings">Savings Account</SelectItem>
+                      <SelectItem value="current">Current Account</SelectItem>
+                      <SelectItem value="cash">Cash Wallet</SelectItem>
+                      <SelectItem value="credit card">Credit Card</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs sm:text-sm" />
               </FormItem>
             )}
           />
 
-          {/* ADD BALANCE FIELD */}
+          {/* Balance Field */}
           <FormField 
             name='balance'
             control={form.control}
@@ -208,7 +185,7 @@ export const AccountForm = ({
               <FormItem>
                 <FormLabel 
                 htmlFor="account-balance-input"
-                className="flex items-center gap-2 text-slate-700 font-semibold text-base">
+                className="flex items-center gap-2 text-slate-700 font-semibold text-sm sm:text-base">
                   <Wallet className="h-4 w-4 text-green-600" />
                   Initial Balance
                 </FormLabel>
@@ -222,20 +199,20 @@ export const AccountForm = ({
                       {...field}
                       value={field.value || ''} 
                        autoComplete="off" 
-                      className="h-12 pl-11 text-base border-2 border-slate-200 focus:border-blue-500 transition-all duration-200 rounded-xl bg-white/80 backdrop-blur-sm"
+                      className="h-12 sm:h-11 pl-11 text-sm sm:text-base border-2 border-slate-200 focus:border-blue-500 transition-all duration-200 rounded-xl bg-white/80 backdrop-blur-sm"
                     />
                     <Wallet className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
                   </div>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs sm:text-sm" />
               </FormItem>
             )}
           />
 
-          {/* Quick Suggestions - SAME */}
+          {/* Quick Suggestions - Mobile Responsive */}
           {!id && (
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-sm text-slate-600">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-600">
                 <Sparkles className="h-4 w-4 text-amber-500" />
                 Quick suggestions:
               </div>
@@ -246,10 +223,10 @@ export const AccountForm = ({
                     type="button"
                     onClick={() => handleSuggestionClick(suggestion)}
                     disabled={disabled}
-                    className={`flex items-center gap-2 p-3 rounded-lg border-2 transition-all duration-200 hover:scale-105 hover:shadow-md ${suggestion.color} disabled:opacity-50 disabled:cursor-not-allowed`}
+                    className={`flex items-center gap-2 p-3 sm:p-2 rounded-lg border-2 transition-all duration-200 hover:scale-105 hover:shadow-md ${suggestion.color} disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     {suggestion.icon}
-                    <span className="text-sm font-medium">{suggestion.name.split(' ')[0]}</span>
+                    <span className="text-xs sm:text-sm font-medium">{suggestion.name.split(' ')[0]}</span>
                   </button>
                 ))}
               </div>
@@ -257,12 +234,12 @@ export const AccountForm = ({
           )}
         </div>
 
-        {/* Action Buttons - SAME */}
+        {/* Action Buttons - Mobile Responsive */}
         <div className="space-y-3 pt-4">
           <Button 
             type="submit" 
             disabled={disabled}
-            className="w-full h-10 bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+            className="w-full h-12 sm:h-10 bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
           >
             {disabled ? (
               <div className="flex items-center gap-2">
@@ -282,7 +259,7 @@ export const AccountForm = ({
               type='button'
               disabled={disabled || isDeleting}
               onClick={handleDelete}
-              className="w-full h-10 bg-linear-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white font-medium text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+              className="w-full h-12 sm:h-10 bg-linear-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white font-medium text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
             >
               {isDeleting ? (
                 <div className="flex items-center gap-2">
@@ -299,7 +276,7 @@ export const AccountForm = ({
           )}
         </div>
 
-        {/* Help Text - SAME */}
+        {/* Help Text - Mobile Responsive */}
         <div className="bg-slate-50/80 border border-slate-200 rounded-xl p-4">
           <div className="flex items-start gap-3">
             <div className="p-2 bg-blue-100 rounded-lg mt-1">

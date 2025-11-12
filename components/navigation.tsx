@@ -8,9 +8,9 @@ import { useMedia } from 'react-use';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { Menu, Home, TrendingUp, Landmark, Folder, Settings, Wallet } from "lucide-react";
+import { Menu, Home, TrendingUp, Landmark, Folder, Settings, Wallet, LogOut } from "lucide-react";
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
-import { UserButton } from "@clerk/nextjs";
+import { useClerk, UserButton } from "@clerk/nextjs";
 
 const routes = [
   {
@@ -44,11 +44,16 @@ export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+   const { signOut } = useClerk();
   const isMobile = useMedia("(max-width: 1024px)", false);
 
   const onClick = (href: string) => {
     router.push(href);
     setIsOpen(false);
+  };
+
+  const handleSignOut = () => {
+    signOut();
   };
 
   // ✅ Fetch accounts data for Quick Stats
@@ -129,6 +134,15 @@ export const Navigation = () => {
               )}
             </div>
           </div>
+
+           <Button
+    onClick={handleSignOut}
+    variant="ghost"
+    className="justify-start text-red-600 hover:text-red-700 hover:bg-red-50 ml-3"
+  >
+    <LogOut className="h-4 w-4 mr-2" />
+    Sign Out
+  </Button>
         </NavigationSheetContent>
       </Sheet>
     );

@@ -22,7 +22,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 
 // Icons
-import { Plus, Folder, TrendingUp, TrendingDown, Loader2, Edit, MoreHorizontal } from 'lucide-react';
+import { Plus, Folder, TrendingUp, TrendingDown, Loader2, Edit, MoreHorizontal, Wallet, Wallet2, SquareStack, LayoutGrid } from 'lucide-react';
 
 const CategoryPage = () => {
   const newCategory = useNewCategory();
@@ -74,7 +74,7 @@ const CategoryPage = () => {
           </div>
           <Button 
             onClick={newCategory.onOpen} 
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
           >
             <Plus className='h-4 w-4 mr-2'/>
             New Category
@@ -83,61 +83,65 @@ const CategoryPage = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <Card className="bg-white border-0 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Total Categories</p>
-                <p className="text-2xl font-bold text-slate-800">{categories.length}</p>
-              </div>
-              <Folder className="h-8 w-8 text-blue-500" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-0 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Expense Types</p>
-                <p className="text-2xl font-bold text-rose-600">
-                  {categories.filter(cat => cat.type === 'expense').length}
-                </p>
-              </div>
-              <TrendingDown className="h-8 w-8 text-rose-500" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-0 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Income Types</p>
-                <p className="text-2xl font-bold text-emerald-600">
-                  {categories.filter(cat => cat.type === 'income').length}
-                </p>
-              </div>
-              <TrendingUp className="h-8 w-8 text-emerald-500" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-0 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Active</p>
-                <p className="text-2xl font-bold text-slate-800">{categories.length}</p>
-              </div>
-              <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center">
-                <div className="h-2 w-2 bg-green-500 rounded-full"></div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+  {/* Total Categories Card */}
+  <Card className="bg-white border-0 shadow-sm">
+    <CardContent className="p-3 md:p-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs md:text-sm font-medium text-slate-600">Total Categories</p>
+          <p className="text-lg md:text-2xl font-bold text-slate-800">{categories.length}</p>
+        </div>
+        <LayoutGrid className="h-6 w-6 md:h-8 md:w-8 text-blue-500" />
       </div>
+    </CardContent>
+  </Card>
+
+  {/* Expense Types Card */}
+  <Card className="bg-white border-0 shadow-sm">
+    <CardContent className="p-3 md:p-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs md:text-sm font-medium text-slate-600">Expense Types</p>
+          <p className="text-lg md:text-2xl font-bold text-rose-600">
+            {categories.filter(cat => cat.type === 'expense').length}
+          </p>
+        </div>
+        <Wallet className="h-6 w-6 md:h-8 md:w-8 text-rose-500" />
+      </div>
+    </CardContent>
+  </Card>
+
+  {/* Income Types Card */}
+  <Card className="bg-white border-0 shadow-sm">
+    <CardContent className="p-3 md:p-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs md:text-sm font-medium text-slate-600">Income Types</p>
+          <p className="text-lg md:text-2xl font-bold text-emerald-600">
+            {categories.filter(cat => cat.type === 'income').length}
+          </p>
+        </div>
+        <Wallet className="h-6 w-6 md:h-8 md:w-8 text-emerald-500" />
+      </div>
+    </CardContent>
+  </Card>
+
+  {/* Active Card */}
+  <Card className="bg-white border-0 shadow-sm">
+    <CardContent className="p-3 md:p-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs md:text-sm font-medium text-slate-600">Active</p>
+          <p className="text-lg md:text-2xl font-bold text-slate-800">{categories.length}</p>
+        </div>
+        <div className="h-6 w-6 md:h-8 md:w-8 bg-green-100 rounded-full flex items-center justify-center">
+          <div className="h-1.5 w-1.5 md:h-2 md:w-2 bg-green-500 rounded-full"></div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
 
       {/* Main Table Card */}
       <Card className="bg-white border-0 shadow-sm">

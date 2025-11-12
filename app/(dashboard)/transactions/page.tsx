@@ -18,7 +18,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 
 // Icons
-import { Plus, Receipt, TrendingUp, TrendingDown, Loader2, Edit, MoreHorizontal, Calendar, User, Wallet } from 'lucide-react';
+import { Plus, Receipt,  Loader2, Edit, MoreHorizontal, Calendar, User, Wallet,  BarChart3} from 'lucide-react';
 
 type Transaction = {
   id: string;
@@ -120,63 +120,67 @@ const TransactionPage = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <Card className="bg-white border-0 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Total Transactions</p>
-                <p className="text-2xl font-bold text-slate-800">{transactions.length}</p>
-              </div>
-              <Receipt className="h-8 w-8 text-blue-500" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-0 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Total Income</p>
-                <p className="text-2xl font-bold text-emerald-600">
-                  ₹{totalIncome.toLocaleString()}
-                </p>
-              </div>
-              <TrendingUp className="h-8 w-8 text-emerald-500" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-0 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Total Expenses</p>
-                <p className="text-2xl font-bold text-rose-600">
-                  ₹{totalExpenses.toLocaleString()}
-                </p>
-              </div>
-              <TrendingDown className="h-8 w-8 text-rose-500" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-0 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-slate-600">Net Amount</p>
-                <p className={`text-2xl font-bold ${netAmount >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
-                  ₹{Math.abs(netAmount).toLocaleString()} {netAmount >= 0 ? '' : '(Loss)'}
-                </p>
-              </div>
-              <div className={`h-8 w-8 ${netAmount >= 0 ? 'bg-green-100' : 'bg-red-100'} rounded-full flex items-center justify-center`}>
-                <div className={`h-2 w-2 ${netAmount >= 0 ? 'bg-green-500' : 'bg-red-500'} rounded-full`}></div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+  {/* Total Transactions Card */}
+  <Card className="bg-white border-0 shadow-sm">
+    <CardContent className="p-3 md:p-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs md:text-sm font-medium text-slate-600">Total Transactions</p>
+          <p className="text-lg md:text-2xl font-bold text-slate-800">{transactions.length}</p>
+        </div>
+        <Receipt className="h-6 w-6 md:h-8 md:w-8 text-blue-500" />
       </div>
+    </CardContent>
+  </Card>
+
+  {/* Total Income Card */}
+  <Card className="bg-white border-0 shadow-sm">
+    <CardContent className="p-3 md:p-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs md:text-sm font-medium text-slate-600">Total Income</p>
+          <p className="text-lg md:text-2xl font-bold text-emerald-600">
+            ₹{totalIncome.toLocaleString()}
+          </p>
+        </div>
+        <BarChart3 className="h-6 w-6 md:h-8 md:w-8 text-emerald-500" />
+      </div>
+    </CardContent>
+  </Card>
+
+  {/* Total Expenses Card */}
+  <Card className="bg-white border-0 shadow-sm">
+    <CardContent className="p-3 md:p-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs md:text-sm font-medium text-slate-600">Total Expenses</p>
+          <p className="text-lg md:text-2xl font-bold text-rose-600">
+            ₹{totalExpenses.toLocaleString()}
+          </p>
+        </div>
+        <BarChart3 className="h-6 w-6 md:h-8 md:w-8 text-rose-500" />
+      </div>
+    </CardContent>
+  </Card>
+
+  {/* Net Amount Card */}
+  <Card className="bg-white border-0 shadow-sm">
+    <CardContent className="p-3 md:p-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs md:text-sm font-medium text-slate-600">Net Amount</p>
+          <p className={`text-lg md:text-2xl font-bold ${netAmount >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+            ₹{Math.abs(netAmount).toLocaleString()} {netAmount >= 0 ? '' : '(Loss)'}
+          </p>
+        </div>
+        <div className={`h-6 w-6 md:h-8 md:w-8 ${netAmount >= 0 ? 'bg-green-100' : 'bg-red-100'} rounded-full flex items-center justify-center`}>
+          <div className={`h-1.5 w-1.5 md:h-2 md:w-2 ${netAmount >= 0 ? 'bg-green-500' : 'bg-red-500'} rounded-full`}></div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
 
       {/* Main Table Card */}
       <Card className="bg-white border-0 shadow-sm">

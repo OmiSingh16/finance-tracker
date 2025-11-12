@@ -193,91 +193,95 @@ const dateRange = useMemo(() => {
 
 
       {/* Summary Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card className="bg-white border-l-4 border-l-blue-500 shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-sm text-slate-600">Total Income</p>
-                <p className="text-2xl font-bold text-slate-800">
-                  ₹{summary.totalIncome?.toLocaleString()}
-                </p>
-                <p className={`text-xs ${periodComparison.currentPeriod.income >= periodComparison.lastPeriod.income ? 'text-green-600' : 'text-red-600'}`}>
-                  {periodComparison.currentPeriod.income >= periodComparison.lastPeriod.income ? '↗' : '↘'}
-                  {periodComparison.lastPeriod.income > 0
-                    ? Math.abs(((periodComparison.currentPeriod.income - periodComparison.lastPeriod.income) / periodComparison.lastPeriod.income) * 100).toFixed(1)
-                    : '0'
-                  }% from last period
-                </p>
-              </div>
-              <div className="p-3 bg-blue-100 rounded-full">
-                <TrendingUp className="h-6 w-6 text-blue-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-l-4 border-l-rose-500 shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-sm text-slate-600">Total Expenses</p>
-                <p className="text-2xl font-bold text-slate-800">
-                  ₹{summary.totalExpenses?.toLocaleString()}
-                </p>
-                <p className={`text-xs ${periodComparison.currentPeriod.expenses <= periodComparison.lastPeriod.expenses ? 'text-green-600' : 'text-red-600'}`}>
-                  {periodComparison.currentPeriod.expenses <= periodComparison.lastPeriod.expenses ? '↘' : '↗'}
-                  {periodComparison.lastPeriod.expenses > 0
-                    ? Math.abs(((periodComparison.currentPeriod.expenses - periodComparison.lastPeriod.expenses) / periodComparison.lastPeriod.expenses) * 100).toFixed(1)
-                    : '0'
-                  }% from last period
-                </p>
-              </div>
-              <div className="p-3 bg-rose-100 rounded-full">
-                <TrendingDown className="h-6 w-6 text-rose-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-l-4 border-l-emerald-500 shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-sm text-slate-600">Net Cash Flow</p>
-                <p className={`text-2xl font-bold ${summary.netCashFlow >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
-                  {summary.netCashFlow >= 0 ? '+' : ''}₹{Math.abs(summary.netCashFlow).toLocaleString()}
-                </p>
-                <p className="text-xs text-slate-500">
-                  {summary.transactionCount} transactions
-                </p>
-              </div>
-              <div className="p-3 bg-emerald-100 rounded-full">
-                <Activity className="h-6 w-6 text-emerald-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-l-4 border-l-purple-500 shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-sm text-slate-600">Savings Rate</p>
-                <p className={`text-2xl font-bold ${summary.netCashFlow >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
-                  {summary.totalIncome > 0 ? ((summary.netCashFlow / summary.totalIncome) * 100).toFixed(1) : 0}%
-                </p>
-                <p className="text-xs text-slate-500">
-                  of income saved
-                </p>
-              </div>
-              <div className="p-3 bg-purple-100 rounded-full">
-                <Wallet className="h-6 w-6 text-purple-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+  {/* Total Income Card */}
+  <Card className="bg-white border-l-4 border-l-blue-500 shadow-lg">
+    <CardContent className="p-4 md:p-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="text-xs md:text-sm text-slate-600">Total Income</p>
+          <p className="text-lg md:text-2xl font-bold text-slate-800">
+            ₹{summary.totalIncome?.toLocaleString()}
+          </p>
+          <p className={`text-xs ${periodComparison.currentPeriod.income >= periodComparison.lastPeriod.income ? 'text-green-600' : 'text-red-600'}`}>
+            {periodComparison.currentPeriod.income >= periodComparison.lastPeriod.income ? '↗' : '↘'}
+            {periodComparison.lastPeriod.income > 0
+              ? Math.abs(((periodComparison.currentPeriod.income - periodComparison.lastPeriod.income) / periodComparison.lastPeriod.income) * 100).toFixed(1)
+              : '0'
+            }% from last period
+          </p>
+        </div>
+        <div className="p-2 md:p-3 bg-blue-100 rounded-full">
+          <TrendingUp className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
+        </div>
       </div>
+    </CardContent>
+  </Card>
+
+  {/* Total Expenses Card */}
+  <Card className="bg-white border-l-4 border-l-rose-500 shadow-lg">
+    <CardContent className="p-4 md:p-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="text-xs md:text-sm text-slate-600">Total Expenses</p>
+          <p className="text-lg md:text-2xl font-bold text-slate-800">
+            ₹{summary.totalExpenses?.toLocaleString()}
+          </p>
+          <p className={`text-xs ${periodComparison.currentPeriod.expenses <= periodComparison.lastPeriod.expenses ? 'text-green-600' : 'text-red-600'}`}>
+            {periodComparison.currentPeriod.expenses <= periodComparison.lastPeriod.expenses ? '↘' : '↗'}
+            {periodComparison.lastPeriod.expenses > 0
+              ? Math.abs(((periodComparison.currentPeriod.expenses - periodComparison.lastPeriod.expenses) / periodComparison.lastPeriod.expenses) * 100).toFixed(1)
+              : '0'
+            }% from last period
+          </p>
+        </div>
+        <div className="p-2 md:p-3 bg-rose-100 rounded-full">
+          <TrendingDown className="h-5 w-5 md:h-6 md:w-6 text-rose-600" />
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+
+  {/* Net Cash Flow Card */}
+  <Card className="bg-white border-l-4 border-l-emerald-500 shadow-lg">
+    <CardContent className="p-4 md:p-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="text-xs md:text-sm text-slate-600">Net Cash Flow</p>
+          <p className={`text-lg md:text-2xl font-bold ${summary.netCashFlow >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+            {summary.netCashFlow >= 0 ? '+' : ''}₹{Math.abs(summary.netCashFlow).toLocaleString()}
+          </p>
+          <p className="text-xs text-slate-500">
+            {summary.transactionCount} transactions
+          </p>
+        </div>
+        <div className="p-2 md:p-3 bg-emerald-100 rounded-full">
+          <Activity className="h-5 w-5 md:h-6 md:w-6 text-emerald-600" />
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+
+  {/* Savings Rate Card */}
+  <Card className="bg-white border-l-4 border-l-purple-500 shadow-lg">
+    <CardContent className="p-4 md:p-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="text-xs md:text-sm text-slate-600">Savings Rate</p>
+          <p className={`text-lg md:text-2xl font-bold ${summary.netCashFlow >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+            {summary.totalIncome > 0 ? ((summary.netCashFlow / summary.totalIncome) * 100).toFixed(1) : 0}%
+          </p>
+          <p className="text-xs text-slate-500">
+            of income saved
+          </p>
+        </div>
+        <div className="p-2 md:p-3 bg-purple-100 rounded-full">
+          <Wallet className="h-5 w-5 md:h-6 md:w-6 text-purple-600" />
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
 
       
       {/* Charts Grid */}
