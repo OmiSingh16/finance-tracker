@@ -1,4 +1,5 @@
 // scripts/seed.ts
+import 'dotenv/config';
 import { db } from '@/db/drizzle';
 import { accounts, categories, transactions } from '@/db/schema';
 import { createId } from '@paralleldrive/cuid2';
