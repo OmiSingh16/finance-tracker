@@ -7,15 +7,15 @@
     "npm": ">=9.0.0"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --turbopack",
+    "build": "npm run db:generate && npm run db:migrate && npm run db:seed && next build",
     "start": "next start",
     "lint": "next lint",
     "db:generate": "drizzle-kit generate:pg --schema db/schema.ts --out ./drizzle",
     "db:migrate": "tsx --transpile-only ./scripts/migrate.ts",
     "db:seed": "tsx --transpile-only ./scripts/seed.ts",
     "db:studio": "drizzle-kit studio",
-    "postinstall": "npm run db:migrate && npm run db:seed"
+    "postinstall": "npm run db:generate"
   },
   "dependencies": {
     "@clerk/backend": "^2.20.0",
