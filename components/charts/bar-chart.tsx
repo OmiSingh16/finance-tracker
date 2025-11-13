@@ -25,7 +25,7 @@ const SingleTooltip = ({ active, payload, label }: TooltipProps) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-white p-4 rounded-lg shadow-xl border border-slate-200">
+      <div className="bg-white p-4 rounded-lg shadow-xl  border border-slate-200">
         <p className="font-bold text-slate-800 mb-2">{label}</p>
         <p className={`text-lg font-bold ${
           data.type === 'income' ? 'text-green-600' :

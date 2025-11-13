@@ -195,7 +195,7 @@ const dateRange = useMemo(() => {
       {/* Summary Stats Cards */}
 <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
   {/* Total Income Card */}
-  <Card className="bg-white border-l-4 border-l-blue-500 shadow-lg">
+  <Card className="bg-white border-0 border-l-4 border-l-blue-500 shadow-lg">
     <CardContent className="p-4 md:p-6">
       <div className="flex justify-between items-center">
         <div>
@@ -219,7 +219,7 @@ const dateRange = useMemo(() => {
   </Card>
 
   {/* Total Expenses Card */}
-  <Card className="bg-white border-l-4 border-l-rose-500 shadow-lg">
+  <Card className="bg-white border-0 border-l-4 border-l-rose-500 shadow-lg">
     <CardContent className="p-4 md:p-6">
       <div className="flex justify-between items-center">
         <div>
@@ -243,7 +243,7 @@ const dateRange = useMemo(() => {
   </Card>
 
   {/* Net Cash Flow Card */}
-  <Card className="bg-white border-l-4 border-l-emerald-500 shadow-lg">
+  <Card className="bg-white border-0 border-l-4 border-l-emerald-500 shadow-lg">
     <CardContent className="p-4 md:p-6">
       <div className="flex justify-between items-center">
         <div>
@@ -263,7 +263,7 @@ const dateRange = useMemo(() => {
   </Card>
 
   {/* Savings Rate Card */}
-  <Card className="bg-white border-l-4 border-l-purple-500 shadow-lg">
+  <Card className="bg-white border-l-4 border-0 border-l-purple-500 shadow-lg">
     <CardContent className="p-4 md:p-6">
       <div className="flex justify-between items-center">
         <div>
@@ -287,7 +287,7 @@ const dateRange = useMemo(() => {
       {/* Charts Grid */}
 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
   {/* Line Chart - Daily Trends */}
-  <Card className="bg-white shadow-lg">
+  <Card className="bg-white border-0 shadow-lg">
     <CardHeader className="pb-4">
       <CardTitle className="flex items-center gap-2 text-slate-800">
         <TrendingUp className="h-5 w-5 text-blue-600" />
@@ -300,7 +300,7 @@ const dateRange = useMemo(() => {
   </Card>
 
   {/* Pie Chart - Dynamic Categories */}
-  <Card className="bg-white shadow-lg">
+  <Card className="bg-white border-0 shadow-lg">
     <CardHeader className="pb-4">
       <CardTitle className="flex items-center justify-between text-slate-800">
         {/* Left side - Title with icon */}
@@ -348,7 +348,7 @@ const dateRange = useMemo(() => {
 
 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
   {/* Spider Chart - Account Distribution */}
-  <Card className="bg-white shadow-lg">
+  <Card className="bg-white border-0 shadow-lg">
     <CardHeader className="pb-4">
       <CardTitle className="flex items-center gap-2 text-slate-800">
         <Activity className="h-5 w-5 text-purple-600" />
@@ -361,7 +361,7 @@ const dateRange = useMemo(() => {
   </Card>
 
   {/* Bar Chart - Period Comparison */}
-  <Card className="bg-white shadow-lg">
+  <Card className="bg-white border-0 shadow-lg">
     <CardHeader className="pb-4">
       <CardTitle className="flex items-center gap-2 text-slate-800">
         <BarChart3 className="h-5 w-5 text-emerald-600" />
