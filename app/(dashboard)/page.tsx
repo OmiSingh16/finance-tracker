@@ -263,7 +263,7 @@ const dateRange = useMemo(() => {
   </Card>
 
   {/* Savings Rate Card */}
-  <Card className="bg-white border-l-4 border-0 border-l-purple-500 shadow-lg">
+  <Card className="bg-white border-0 border-l-4 border-l-purple-500 shadow-lg">
     <CardContent className="p-4 md:p-6">
       <div className="flex justify-between items-center">
         <div>
